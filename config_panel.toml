@@ -3,6 +3,21 @@ version = "1.0"
 [main]
 name = "Main Configuration"
 
+    [main.security]
+    name = "Security Settings"
+
+        [main.security.admin_password]
+        ask = "Admin password"
+        type = "password"
+        help = "Password to access the admin interface"
+        bind = "ADMIN_PASSWORD:__INSTALL_DIR__/.env"
+
+        [main.security.allowed_admin_ips]
+        ask = "Allowed admin IPs"
+        type = "string"
+        help = "Comma-separated list of IPs allowed to access admin. Use '*' for all IPs (not recommended in production)."
+        bind = "ALLOWED_ADMIN_IPS:__INSTALL_DIR__/.env"
+
     [main.paths]
     name = "URL Paths"
 
@@ -10,4 +25,46 @@ name = "Main Configuration"
         ask = "Admin interface path"
         type = "string"
         help = "URL path for admin interface (e.g., /admin or /derp for obscurity)"
-        bind = ":admin_path"
+        bind = "ADMIN_PATH:__INSTALL_DIR__/.env"
+
+        [main.paths.root_redirect]
+        ask = "Root redirect URL"
+        type = "string"
+        help = "Where to redirect requests to / (your main website)"
+        bind = "ROOT_REDIRECT:__INSTALL_DIR__/.env"
+
+        [main.paths.not_found_redirect]
+        ask = "404 redirect URL"
+        type = "string"
+        help = "Where to redirect unknown short links"
+        bind = "NOT_FOUND_REDIRECT:__INSTALL_DIR__/.env"
+
+    [main.sessions]
+    name = "Session & Cookie Settings"
+
+        [main.sessions.session_window_min]
+        ask = "Session window (minutes)"
+        type = "number"
+        help = "How long a session cookie lasts"
+        bind = "SESSION_WINDOW_MIN:__INSTALL_DIR__/.env"
+
+        [main.sessions.user_cookie_max_days]
+        ask = "User cookie lifetime (days)"
+        type = "number"
+        help = "How long the visitor tracking cookie lasts"
+        bind = "USER_COOKIE_MAX_DAYS:__INSTALL_DIR__/.env"
+
+        [main.sessions.cookie_secure]
+        ask = "Secure cookies (HTTPS only)"
+        type = "boolean"
+        help = "Should cookies only be sent over HTTPS (recommended: yes)"
+        bind = "COOKIE_SECURE:__INSTALL_DIR__/.env"
+
+    [main.rate_limiting]
+    name = "Rate Limiting"
+
+        [main.rate_limiting.rate_limit_window]
+        ask = "Rate limit window (seconds)"
+        type = "number"
+        help = "How long before the same IP can trigger another hit for the same link (0 = disabled)"
+        bind = "RATE_LIMIT_WINDOW:__INSTALL_DIR__/.env"
