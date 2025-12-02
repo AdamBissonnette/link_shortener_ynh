@@ -48,6 +48,54 @@ chmod -R o-rwx "$install_dir"
 chown -R "$app:www-data" "$install_dir"
 
 #=================================================
+# INITIALIZE CONFIG SETTINGS IF NOT SET
+#=================================================
+# Read current values from .env and store in settings if not already set
+if [ -z "${admin_password:-}" ]; then
+    admin_password=$(grep "^ADMIN_PASSWORD=" "$install_dir/.env" | cut -d'=' -f2-)
+    ynh_app_setting_set --app="$app" --key=admin_password --value="$admin_password"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=allowed_admin_ips)" ]; then
+    allowed_admin_ips=$(grep "^ALLOWED_ADMIN_IPS=" "$install_dir/.env" | cut -d'=' -f2- || echo "*")
+    ynh_app_setting_set --app="$app" --key=allowed_admin_ips --value="$allowed_admin_ips"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=admin_path)" ]; then
+    admin_path_value=$(grep "^ADMIN_PATH=" "$install_dir/.env" | cut -d'=' -f2- || echo "/derp")
+    ynh_app_setting_set --app="$app" --key=admin_path --value="$admin_path_value"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=root_redirect)" ]; then
+    root_redirect_value=$(grep "^ROOT_REDIRECT=" "$install_dir/.env" | cut -d'=' -f2- || echo "https://example.com")
+    ynh_app_setting_set --app="$app" --key=root_redirect --value="$root_redirect_value"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=not_found_redirect)" ]; then
+    not_found_redirect_value=$(grep "^NOT_FOUND_REDIRECT=" "$install_dir/.env" | cut -d'=' -f2- || echo "https://example.com")
+    ynh_app_setting_set --app="$app" --key=not_found_redirect --value="$not_found_redirect_value"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=session_window_min)" ]; then
+    session_window=$(grep "^SESSION_WINDOW_MIN=" "$install_dir/.env" | cut -d'=' -f2- || echo "30")
+    ynh_app_setting_set --app="$app" --key=session_window_min --value="$session_window"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=user_cookie_max_days)" ]; then
+    cookie_days=$(grep "^USER_COOKIE_MAX_DAYS=" "$install_dir/.env" | cut -d'=' -f2- || echo "730")
+    ynh_app_setting_set --app="$app" --key=user_cookie_max_days --value="$cookie_days"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=cookie_secure)" ]; then
+    ynh_app_setting_set --app="$app" --key=cookie_secure --value="1"
+fi
+
+if [ -z "$(ynh_app_setting_get --app="$app" --key=rate_limit_window)" ]; then
+    rate_limit=$(grep "^RATE_LIMIT_WINDOW=" "$install_dir/.env" | cut -d'=' -f2- || echo "60")
+    ynh_app_setting_set --app="$app" --key=rate_limit_window --value="$rate_limit"
+fi
+
+#=================================================
 # REAPPLY SYSTEM CONFIGURATIONS
 #=================================================
 ynh_script_progression "Upgrading system configurations related to $app..."

@@ -80,6 +80,19 @@ chmod -R o-rwx "$install_dir"
 chown -R "$app:www-data" "$install_dir"
 
 #=================================================
+# STORE SETTINGS FOR CONFIG PANEL
+#=================================================
+ynh_app_setting_set --app="$app" --key=admin_password --value="$admin_password"
+ynh_app_setting_set --app="$app" --key=allowed_admin_ips --value="*"
+ynh_app_setting_set --app="$app" --key=admin_path --value="$admin_path"
+ynh_app_setting_set --app="$app" --key=root_redirect --value="$root_redirect"
+ynh_app_setting_set --app="$app" --key=not_found_redirect --value="$not_found_redirect"
+ynh_app_setting_set --app="$app" --key=session_window_min --value="30"
+ynh_app_setting_set --app="$app" --key=user_cookie_max_days --value="730"
+ynh_app_setting_set --app="$app" --key=cookie_secure --value="1"
+ynh_app_setting_set --app="$app" --key=rate_limit_window --value="60"
+
+#=================================================
 # SYSTEM CONFIGURATION
 #=================================================
 ynh_script_progression "Adding system configurations related to $app..."
