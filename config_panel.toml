@@ -3,19 +3,6 @@ version = "1.0"
 [main]
 name = "Main Configuration"
 
-    [main.security]
-    name = "Security Settings"
-
-        [main.security.admin_password]
-        ask = "Admin password"
-        type = "password"
-        help = "Password to access the admin interface"
-
-        [main.security.allowed_admin_ips]
-        ask = "Allowed admin IPs"
-        type = "string"
-        help = "Comma-separated list of IPs allowed to access admin. Use '*' for all IPs (not recommended in production)."
-
     [main.paths]
     name = "URL Paths"
 
