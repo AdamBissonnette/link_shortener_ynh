@@ -82,6 +82,17 @@ It is downloaded from GitHub during installation via ynh_setup_source.
 
 ## Key Configuration
 
+### Config Panel
+
+YunoHost provides a web UI for modifying app settings:
+- **Access**: YunoHost admin panel → Applications → Link Shortener → Configure
+- **Settings available**:
+  - Security: Admin password, allowed IPs
+  - Paths: Admin path, root redirect, 404 redirect
+  - Sessions: Session timeout, cookie lifetime, secure cookies
+  - Rate limiting: Rate limit window
+- **Auto-restart**: Service automatically restarts when settings change
+
 ### manifest.toml Variables
 
 The manifest defines these install-time questions:
