@@ -8,18 +8,21 @@ This is a YunoHost packaging of the Link Shortener application - a high-performa
 
 ## Working in This Repository
 
-**Two Development Contexts:**
+**Two Separate Repositories:**
 
-1. **Root directory** (`/`) - YunoHost packaging files (manifest, scripts, configs)
+1. **This repo** (`ynh_link_shortener`) - YunoHost packaging only
+   - Contains: manifest, scripts, configs, documentation
    - Work here when modifying installation, upgrade, or YunoHost integration
    - Cannot be fully tested on macOS (requires YunoHost instance)
+   - Source code is downloaded from GitHub during installation
 
-2. **App directory** (`app/`) - Link shortener application source code
+2. **Application repo** (`link_shortener`) - The actual app source code
+   - Contains: TypeScript source, public files, package.json
    - Work here when modifying application features, endpoints, or UI
    - Can be tested locally on macOS
-   - Has its own `app/WARP.md` with development commands
+   - Located at `/Users/adam/Projects/link_shortener` (if developing locally)
 
-**When working on app code**: Always `cd app/` first and refer to `app/WARP.md` for local development commands.
+**When working on app code**: Work in the separate `link_shortener` repo, then update the version/release reference in this package's `manifest.toml`.
 
 ## Architecture
 
@@ -226,35 +229,34 @@ The upgrade script (`scripts/upgrade`):
 
 ## Development Workflow
 
-### Testing Locally (Development Machine)
+### Testing the Application Locally (Development Machine)
 
-You cannot fully test YunoHost packaging on macOS. However, you can:
+You cannot fully test YunoHost packaging on macOS, but you can test the base application:
 
-1. **Test the base app**:
 ```bash
-cd app/
+# Switch to the link_shortener repo
+cd /Users/adam/Projects/link_shortener
+
 npm install
 cp .env.example .env
 # Edit .env to set ADMIN_PASSWORD and other settings
+
 npm run build      # Compile TypeScript
 npm start          # Run in production mode
 # OR
-npm run dev        # Development mode with ts-node
+npm run dev        # Development mode with ts-node and auto-reload
+
 # Visit http://localhost:3000
 ```
 
-2. **Use the admin CLI** (requires `jq`):
-```bash
-cd app/
-chmod +x admin-cli.sh
-export API_URL=http://localhost:3000
-export ADMIN_PASSWORD=changeme
-./admin-cli.sh add test https://example.com
-./admin-cli.sh list
-```
+For admin CLI and testing commands, see the `link_shortener` repo's WARP.md.
 
-3. **Validate manifest**:
+### Validating YunoHost Package Changes
+
 ```bash
+# Back in the ynh_link_shortener repo
+cd /Users/adam/Projects/ynh_link_shortener
+
 # Use online validator or YunoHost test instance
 ```
 
@@ -334,12 +336,27 @@ Edit `conf/systemd.service` sandboxing directives (lines 29-53).
 
 When the link_shortener app is updated:
 
-1. Update source in `app/` directory
-2. Test locally first
-3. Bump version in `manifest.toml`: `version = "X.Y.Z~ynh1"`
-4. Test installation on YunoHost
-5. Test upgrade from previous version
-6. Update CHANGELOG if needed
+1. **Make changes in the `link_shortener` repo**
+2. **Test locally** (in the `link_shortener` repo)
+3. **Create a release** in the `link_shortener` repo (e.g., v1.1.0)
+4. **Update `manifest.toml`** in this repo:
+   - Update `version = "1.1.0~ynh1"` (match the app version)
+   - Update `url` in `[resources.sources.main]` to point to new release
+   - Generate new sha256: `wget <url> -O- | sha256sum`
+5. **Test installation** on YunoHost instance
+6. **Test upgrade** from previous version
+7. **Update CHANGELOG** if needed
+
+### Getting the SHA256 for a Release
+
+```bash
+# Download and hash in one command
+wget https://github.com/yourusername/link_shortener/archive/refs/tags/v1.0.0.tar.gz -O- | sha256sum
+
+# Or download first, then hash
+wget https://github.com/yourusername/link_shortener/archive/refs/tags/v1.0.0.tar.gz
+sha256sum v1.0.0.tar.gz
+```
 
 ### Version Numbering
 
