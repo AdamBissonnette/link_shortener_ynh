@@ -10,39 +10,4 @@ name = "Main Configuration"
         ask = "Admin interface path"
         type = "string"
         help = "URL path for admin interface (e.g., /admin or /derp for obscurity)"
-
-        [main.paths.root_redirect]
-        ask = "Root redirect URL"
-        type = "string"
-        help = "Where to redirect requests to / (your main website)"
-
-        [main.paths.not_found_redirect]
-        ask = "404 redirect URL"
-        type = "string"
-        help = "Where to redirect unknown short links"
-
-    [main.sessions]
-    name = "Session & Cookie Settings"
-
-        [main.sessions.session_window_min]
-        ask = "Session window (minutes)"
-        type = "number"
-        help = "How long a session cookie lasts"
-
-        [main.sessions.user_cookie_max_days]
-        ask = "User cookie lifetime (days)"
-        type = "number"
-        help = "How long the visitor tracking cookie lasts"
-
-        [main.sessions.cookie_secure]
-        ask = "Secure cookies (HTTPS only)"
-        type = "boolean"
-        help = "Should cookies only be sent over HTTPS (recommended: yes)"
-
-    [main.rate_limiting]
-    name = "Rate Limiting"
-
-        [main.rate_limiting.rate_limit_window]
-        ask = "Rate limit window (seconds)"
-        type = "number"
-        help = "How long before the same IP can trigger another hit for the same link (0 = disabled)"
+        bind = ":admin_path"
