@@ -52,7 +52,7 @@ ADMIN_PASSWORD=$admin_password
 
 # Comma-separated list of IPs allowed to access admin endpoints
 # YunoHost reverse proxy will pass the real IP via X-Forwarded-For
-ALLOWED_ADMIN_IPS=*
+ALLOWED_ADMIN_IPS=$allowed_admin_ips
 
 # Admin UI path
 ADMIN_PATH=$admin_path
@@ -64,20 +64,34 @@ ROOT_REDIRECT=$root_redirect
 NOT_FOUND_REDIRECT=$not_found_redirect
 
 # Session window (minutes)
-SESSION_WINDOW_MIN=30
+SESSION_WINDOW_MIN=$session_window_min
 
 # User cookie lifetime (days)
-USER_COOKIE_MAX_DAYS=730
+USER_COOKIE_MAX_DAYS=$user_cookie_max_days
 
 # Secure cookies (HTTPS)
 COOKIE_SECURE=true
 
 # Rate limit window (seconds)
-RATE_LIMIT_WINDOW=60
+RATE_LIMIT_WINDOW=$rate_limit_window
 EOF
 
 chmod -R o-rwx "$install_dir"
 chown -R "$app:www-data" "$install_dir"
+
+#=================================================
+# RETRIEVE ARGUMENTS FROM THE MANIFEST
+#=================================================
+
+admin_password=changeme
+allowed_admin_ips=*
+admin_path=cmd
+root_redirect=https://example.com
+not_found_redirect=https://example.com/404
+session_window_min=30
+user_cookie_max_days=730
+cookie_secure=1
+rate_limit_window=60
 
 #=================================================
 # STORE SETTINGS FOR CONFIG PANEL
