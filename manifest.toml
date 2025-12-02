@@ -7,7 +7,7 @@ name = "Link Shortener"
 description.en = "High-performance link shortening and analytics tracking service"
 description.fr = "Service de raccourcissement de liens haute performance avec suivi analytique"
 
-version = "1.0.0~ynh1"
+version = "1.0.0"
 
 maintainers = ["adam"]
 
