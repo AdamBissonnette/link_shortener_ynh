@@ -1,0 +1,16 @@
+#!/bin/bash
+
+source /usr/share/yunohost/helpers
+
+#=================================================
+# RESTART SYSTEMD SERVICE AFTER CONFIG CHANGES
+#=================================================
+ynh_script_progression "Restarting $app's systemd service to apply configuration changes..."
+
+ynh_systemctl --service="$app" --action="restart"
+
+#=================================================
+# END OF SCRIPT
+#=================================================
+
+ynh_script_progression "Configuration of $app applied successfully"
