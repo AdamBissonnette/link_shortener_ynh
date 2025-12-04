@@ -20,6 +20,7 @@ rate_limit_window="60"
 #=================================================
 random_password=$(ynh_string_random)
 
+admin_path="/webadmin"
 root_redirect="https://www.example.com"
 not_found_redirect="https://www.example.com"
 
