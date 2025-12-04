@@ -16,6 +16,24 @@ cookie_secure="1"
 rate_limit_window="60"
 
 #=================================================
+# STORE SETTINGS FOR CONFIG PANEL
+#=================================================
+random_password=$(ynh_string_random)
+
+root_redirect="https://www.example.com"
+not_found_redirect="https://www.example.com"
+
+ynh_app_setting_set --app="$app" --key=admin_password --value="$random_password"
+ynh_app_setting_set --app="$app" --key=allowed_admin_ips --value="$allowed_admin_ips"
+ynh_app_setting_set --app="$app" --key=admin_path --value="$admin_path"
+ynh_app_setting_set --app="$app" --key=root_redirect --value="$root_redirect"
+ynh_app_setting_set --app="$app" --key=not_found_redirect --value="$not_found_redirect"
+ynh_app_setting_set --app="$app" --key=session_window_min --value="$session_window_min"
+ynh_app_setting_set --app="$app" --key=user_cookie_max_days --value="$user_cookie_max_days"
+ynh_app_setting_set --app="$app" --key=cookie_secure --value="$cookie_secure"
+ynh_app_setting_set --app="$app" --key=rate_limit_window --value="$rate_limit_window"
+
+#=================================================
 # INSTALL DEPENDENCIES
 #=================================================
 ynh_script_progression "Installing Node.js..."
@@ -91,19 +109,6 @@ EOF
 
 chmod -R o-rwx "$install_dir"
 chown -R "$app:www-data" "$install_dir"
-
-#=================================================
-# STORE SETTINGS FOR CONFIG PANEL
-#=================================================
-ynh_app_setting_set --app="$app" --key=admin_password --value="$admin_password"
-ynh_app_setting_set --app="$app" --key=allowed_admin_ips --value="$allowed_admin_ips"
-ynh_app_setting_set --app="$app" --key=admin_path --value="$admin_path"
-ynh_app_setting_set --app="$app" --key=root_redirect --value="$root_redirect"
-ynh_app_setting_set --app="$app" --key=not_found_redirect --value="$not_found_redirect"
-ynh_app_setting_set --app="$app" --key=session_window_min --value="$session_window_min"
-ynh_app_setting_set --app="$app" --key=user_cookie_max_days --value="$user_cookie_max_days"
-ynh_app_setting_set --app="$app" --key=cookie_secure --value="$cookie_secure"
-ynh_app_setting_set --app="$app" --key=rate_limit_window --value="$rate_limit_window"
 
 #=================================================
 # SYSTEM CONFIGURATION
